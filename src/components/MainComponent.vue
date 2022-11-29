@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p>Hallo</p>
+  <div id="container">
+    <p class="text">Hallo</p>
   </div>
 </template>
 <script>
