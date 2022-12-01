@@ -1,17 +1,17 @@
 <template>
   <div id="container">
-    <p class="text" v-on:click="handleInput">Hallo</p>
+    <p class="text" v-on:click="alert">Hallo</p>
     <ul>
       <li>
-        <p class="text" v-for="item in results" :key="item.code">
-          {{ results != [] ? item.currency : "" }}
+        <p class="text" v-for="item in data" :key="item.code">
+          {{ data != [] ? item.currency : "" }}
         </p>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 
 const Api = "http://api.nbp.pl/api/exchangerates/tables/b";
@@ -23,21 +23,28 @@ export default {
     };
   },
   methods: {
-    handleInput: function () {
+    alert: function () {
+      alert("blah");
+    },
+  },
+
+  setup() {
+    const data = ref(null);
+    const getData = () => {
       axios
         .get(Api)
         .then((response) => {
-          console.log(response.data[0].rates[0].code);
-          this.results = response.data[0].rates;
+          data.value = response.data[0].rates;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
+    };
+    onMounted(async () => {
+      await getData();
+    });
 
-    alert: function () {
-      alert("blah");
-    },
+    return { data };
   },
 };
 </script>
